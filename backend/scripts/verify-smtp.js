@@ -1,0 +1,4 @@
+import nodemailer from 'nodemailer';
+const host = String(process.env.SMTP_HOST || '').trim(); const port = Number(process.env.SMTP_PORT || 587); const secure = ['1','true','yes'].includes(String(process.env.SMTP_SECURE || '').toLowerCase()); const user = String(process.env.SMTP_USER || '').trim(); const pass = String(process.env.SMTP_PASS || ''); const from = String(process.env.CONTACT_FROM_EMAIL || user || '').trim();
+if (!Number.isInteger(port) || port < 1 || port > 65535 || ![host,user,pass,from].every(Boolean)) { console.error('SMTP configuration is incomplete or invalid. No email was sent.'); process.exit(1); }
+try { await nodemailer.createTransport({ host, port, secure, auth: { user, pass } }).verify(); console.log(JSON.stringify({ ok: true, message: 'SMTP connection verified. No email was sent.' })); } catch { console.error('SMTP connection verification failed. No email was sent.'); process.exit(1); }

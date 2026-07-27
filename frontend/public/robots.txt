@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://papputhakur.com/sitemap.xml
