@@ -74,7 +74,12 @@ async function deliverByEmail(enquiry, requestId) {
 }
 
 const configuredOrigins = String(process.env.CORS_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean);
-const corsOptions = configuredOrigins.length ? { origin: configuredOrigins } : (process.env.NODE_ENV === 'production' ? { origin: false } : {});
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) return callback(null, true);
+    return callback(null, configuredOrigins.includes(origin));
+  },
+};
 const contactLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, max: 100, standardHeaders: true, legacyHeaders: false,
   handler: (_, response) => response.status(429).json({ success: false, ok: false, error: 'Too many requests were submitted. Please wait before trying again.' }),
@@ -106,4 +111,4 @@ app.post('/api/contact', contactLimiter, async (request, response) => {
 });
 app.use((_, response) => response.status(404).json({ success: false, ok: false, error: 'Not found' }));
 app.use((error, _, response, __) => { console.error('Unhandled API error', { name: error?.name, message: error?.message }); response.status(500).json({ success: false, ok: false, error: 'The server could not process the request.' }); });
-app.listen(port, () => console.log(`Portfolio API listening on ${port}`));
+app.listen(port, '0.0.0.0', () => console.log(`Portfolio API listening on ${port}`));

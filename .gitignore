@@ -10,3 +10,6 @@ backend/data/
 *.zip
 legacy-reference/
 backend/probe.*
+.cache/
+.vite/
+*.tmp
