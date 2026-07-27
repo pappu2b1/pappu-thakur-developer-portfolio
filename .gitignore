@@ -13,3 +13,4 @@ backend/probe.*
 .cache/
 .vite/
 *.tmp
+.vercel/

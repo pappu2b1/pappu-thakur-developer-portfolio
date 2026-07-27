@@ -2,127 +2,80 @@
 
 React/Vite portfolio for Pappu Thakur with an Express contact API.
 
+## Deployment status
+
+Deployment status: **Not deployed yet**
+
+- Frontend target: Vercel Hobby
+- Backend target: Render Free
+- Deployment source: GitHub `main` branch
+- Intended frontend domain: `https://papputhakur.com`
+- Intended backend domain: `https://api.papputhakur.com`
+- Email provider: Resend HTTPS API
+- Receiving inbox: `contact@papputhakur.com`
+
+No Vercel project, Render service, Resend domain, DNS record, SSL certificate, custom domain, or production email integration is assumed to exist.
+
+See [RENDER_VERCEL_DEPLOYMENT.md](RENDER_VERCEL_DEPLOYMENT.md) for the fresh deployment sequence.
+
 ## Local setup
 
 ```bash
 npm install
 npm run dev
-```
-
-Run the API separately when testing contact submissions:
-
-```bash
 npm run dev --prefix backend
 npm run dev --prefix frontend
 ```
 
-### Frontend environment
+Frontend local environment (`frontend/.env`):
 
-Create `frontend/.env` from `frontend/.env.example`:
-
-```text
+```env
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
-For production, set `VITE_API_BASE_URL` to the deployed API origin before building the frontend.
+Backend local environment (`backend/.env`):
 
-### Backend environment
-
-Create `backend/.env` from `backend/.env.example` and provide values through the hosting platform or shell environment:
-
-```text
+```env
+NODE_ENV=development
 PORT=5000
 CORS_ORIGINS=http://localhost:5173
-SMTP_HOST=
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=
-SMTP_PASS=
+EMAIL_PROVIDER=resend
+RESEND_API_KEY=
 CONTACT_TO_EMAIL=contact@papputhakur.com
-CONTACT_FROM_EMAIL=
+CONTACT_FROM_EMAIL=Pappu Thakur Portfolio <portfolio@updates.papputhakur.com>
+CONTACT_FILE_FALLBACK=true
 ```
 
-`CONTACT_FROM_EMAIL` must be permitted by the SMTP provider. SMTP credentials and private `.env` files must never be committed. `CORS_ORIGINS` accepts comma-separated origins in production.
+Never commit `.env` files or provider keys.
 
-## Contact delivery behavior
+## Commands
 
-`POST /api/contact` trims and validates the enquiry, then sends it through SMTP to `CONTACT_TO_EMAIL` with the visitor’s validated email as `replyTo`. The email contains the submitted fields, submission time, and request ID.
+- Frontend install: `npm ci` from `frontend`
+- Frontend build: `npm run build` from `frontend`
+- Frontend output: `dist`
+- Backend install: `npm ci` from `backend`
+- Backend start: `npm start` from `backend`
+- Backend entry: `src/server.js`
+- Node.js target: `22.x`
 
-Successful responses are honest and include a safe delivery status:
+## Contact delivery
 
-- `201` with `deliveryStatus: "emailed"` after Nodemailer confirms delivery.
-- `201` with `deliveryStatus: "queued"` after validated data is safely appended to `backend/data/contact-outbox.jsonl`.
+`POST /api/contact` validates and trims submissions, preserves honeypot and rate limiting, and sends through the Resend HTTPS API. The visitor email is used only as `Reply-To`; the configured portfolio address remains the sender. Messages include the enquiry fields, timestamp, and request ID in plain text and escaped HTML.
+
+- `201` with `deliveryStatus: "emailed"` only after Resend accepts the message.
+- `201` with `deliveryStatus: "queued"` only for local development when `CONTACT_FILE_FALLBACK=true` and JSONL storage succeeds.
+- `503` when Resend fails in production or when delivery and enabled local fallback both fail.
 - `400` for validation or honeypot failures.
 - `429` for rate limiting.
-- `503` when neither email delivery nor local storage succeeds.
 
-The frontend shows the same normal success message for both emailed and queued enquiries. It never claims that queued enquiries were emailed.
+Render production sets `CONTACT_FILE_FALLBACK=false` because its filesystem is temporary. No queued success is reported in production. The local JSONL outbox remains ignored and must not be treated as durable production storage.
 
-The JSONL outbox is a local-development fallback. It may be lost on hosting platforms with ephemeral filesystems and is not a durable production queue. This project has no configured MongoDB persistence. For production, use a persistent volume or add a reviewed MongoDB-backed `ContactEnquiry` store before relying on queued fallback.
+## Public routes and SEO
 
-## Outbox retry
+The frontend uses React Router browser history for `/`, `/projects`, `/projects/:slug`, `/about`, `/experience`, `/skills`, `/resume`, `/contact`, and `/privacy`. Vercel rewrites application routes to `index.html` while preserving real public files such as the resume, sitemap, robots, manifest, and assets.
 
-Retry queued records manually, one at a time:
+The canonical SEO base is `https://papputhakur.com`. The sitemap contains only public frontend routes. Production URLs are intended configuration and are not claimed live until deployment is completed and manually verified.
 
-```bash
-npm run retry:contact-outbox --prefix backend
-```
+## Known limitations
 
-The command removes only successfully delivered records, preserves failed and malformed records, avoids logging message bodies, and prints attempted, delivered, failed, and remaining totals. If SMTP is not configured it stops safely without modifying the outbox.
-
-## SMTP verification
-
-Verify the SMTP connection without sending an email:
-
-```bash
-npm run verify:smtp --prefix backend
-```
-
-It exits unsuccessfully when SMTP configuration is incomplete or the connection cannot be verified. It never sends a visitor enquiry automatically during server startup.
-
-## Operational endpoints
-
-```text
-GET /api/health
-GET /api/version
-POST /api/contact
-```
-
-Known limitations: real SMTP delivery requires provider credentials; the local JSONL fallback has no automatic retry worker; LinkedIn URL, verified project demos, repository URLs and screenshots are not configured. Live Hostinger applications, DNS, SSL, SMTP inbox delivery and the www redirect still require verification in hPanel.
-## Hostinger deployment configuration
-
-Production URLs:
-
-```text
-Production frontend: https://papputhakur.com
-Production API: https://api.papputhakur.com
-WWW redirect: https://www.papputhakur.com → https://papputhakur.com
-```
-
-Frontend application settings:
-
-```text
-Application root: frontend
-Install command: npm ci
-Build command: npm run build
-Output directory: dist
-Node.js: 22.x
-VITE_API_BASE_URL=https://api.papputhakur.com
-```
-
-Backend application settings:
-
-```text
-Application root: backend
-Install command: npm ci
-Start command: npm start
-Entry file: src/server.js
-Node.js: 22.x
-CORS_ORIGINS=https://papputhakur.com,https://www.papputhakur.com
-```
-
-Set SMTP credentials, `CONTACT_TO_EMAIL=contact@papputhakur.com`, and `CONTACT_FROM_EMAIL=contact@papputhakur.com` only in Hostinger environment settings. Never commit a production `.env` file.
-
-The frontend includes `public/.htaccess` for client-side route fallback. The JSONL contact outbox is ignored and may not survive an ephemeral rebuild; configure persistent storage before relying on queued fallback in production.
-
-The live Hostinger applications, DNS, SSL, SMTP inbox delivery, and `www` redirect must be verified in hPanel before they are reported as deployed.
+Resend domain verification, DNS, SSL, Vercel, Render, custom domains, and real email receipt still require manual setup and verification. LinkedIn URL, verified project demos, repository URLs, and screenshots are not configured.

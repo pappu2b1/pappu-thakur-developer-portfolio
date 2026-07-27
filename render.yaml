@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: pappu-thakur-portfolio-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGINS
+        value: "https://papputhakur.com,https://www.papputhakur.com"
+      - key: EMAIL_PROVIDER
+        value: resend
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CONTACT_TO_EMAIL
+        value: contact@papputhakur.com
+      - key: CONTACT_FROM_EMAIL
+        value: "Pappu Thakur Portfolio <portfolio@updates.papputhakur.com>"
+      - key: CONTACT_FILE_FALLBACK
+        value: "false"

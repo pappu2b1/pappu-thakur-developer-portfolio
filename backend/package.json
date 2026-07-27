@@ -1,21 +1,21 @@
 {
-  "name": "pappu-portfolio-api",
-  "private": true,
-  "type": "module",
-  "engines": { "node": "22.x" },
-  "scripts": {
-    "dev": "node --watch src/server.js",
-    "start": "node src/server.js",
-    "retry:contact-outbox": "node scripts/retry-contact-outbox.js",
-    "verify:smtp": "node scripts/verify-smtp.js"
-  },
-  "dependencies": {
-    "cors": "latest",
-    "express": "latest",
-    "express-rate-limit": "latest",
-    "helmet": "latest",
-    "mongoose": "latest",
-    "nodemailer": "latest",
-    "pappu-thakur-portfolio": "file:.."
-  }
+    "name":  "pappu-portfolio-api",
+    "private":  true,
+    "type":  "module",
+    "engines":  {
+                    "node":  "22.x"
+                },
+    "scripts":  {
+                    "dev":  "node --watch src/server.js",
+                    "start":  "node src/server.js",
+                    "test":  "node --test"
+                },
+    "dependencies":  {
+                         "cors":  "latest",
+                         "express":  "latest",
+                         "express-rate-limit":  "latest",
+                         "helmet":  "latest",
+                         "mongoose":  "latest",
+                         "pappu-thakur-portfolio":  "file:.."
+                     }
 }
