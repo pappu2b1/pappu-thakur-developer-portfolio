@@ -94,8 +94,8 @@ Known limitations: real SMTP delivery requires provider credentials; the local J
 Production URLs:
 
 ```text
-Frontend: https://papputhakur.com
-Backend API: https://api.papputhakur.com
+Production frontend: https://papputhakur.com
+Production API: https://api.papputhakur.com
 WWW redirect: https://www.papputhakur.com → https://papputhakur.com
 ```
 
