@@ -88,7 +88,7 @@ GET /api/version
 POST /api/contact
 ```
 
-Known limitations: real SMTP delivery requires provider credentials; the local JSONL fallback has no automatic retry worker; no resume PDF, LinkedIn URL, verified project demos, repository URLs, screenshots, or production domain are configured.
+Known limitations: real SMTP delivery requires provider credentials; the local JSONL fallback has no automatic retry worker; LinkedIn URL, verified project demos, repository URLs and screenshots are not configured. Live Hostinger applications, DNS, SSL, SMTP inbox delivery and the www redirect still require verification in hPanel.
 ## Hostinger deployment configuration
 
 Production URLs:
