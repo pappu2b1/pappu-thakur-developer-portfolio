@@ -1,7 +1,10 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+const API_BASE_URL = configuredBaseUrl.endsWith('/api')
+  ? configuredBaseUrl
+  : `${configuredBaseUrl}/api`;
 
 export async function submitContact(payload, signal) {
-  const response = await fetch(`${API_BASE_URL}/api/contact`, {
+  const response = await fetch(`${API_BASE_URL}/contact`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),

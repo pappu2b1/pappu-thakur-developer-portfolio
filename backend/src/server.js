@@ -37,15 +37,19 @@ async function deliverByEmail(enquiry, requestId) {
   return resendProvider.send(enquiry, requestId);
 }
 
-const configuredOrigins = String(process.env.CORS_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean);
+const normalizeOrigin = (origin) => String(origin || '').trim().replace(/\/$/, '');
+const configuredOrigins = [
+  ...String(process.env.CORS_ORIGINS || '').split(','),
+  process.env.FRONTEND_URL,
+].map(normalizeOrigin).filter(Boolean);
 const corsOptions = {
   origin(origin, callback) {
     if (!origin) return callback(null, true);
-    return callback(null, configuredOrigins.includes(origin));
+    return callback(null, configuredOrigins.includes(normalizeOrigin(origin)));
   },
 };
 const contactLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, max: 100, standardHeaders: true, legacyHeaders: false,
+  windowMs: 15 * 60 * 1000, max: 10, standardHeaders: true, legacyHeaders: false,
   handler: (_, response) => response.status(429).json({ success: false, ok: false, error: 'Too many requests were submitted. Please wait before trying again.' }),
 });
 
@@ -77,7 +81,13 @@ app.post('/api/contact', contactLimiter, async (request, response) => {
   }
 });
 app.use((_, response) => response.status(404).json({ success: false, ok: false, error: 'Not found' }));
-app.use((error, _, response, __) => { console.error('Unhandled API error', { name: error?.name, message: error?.message }); response.status(500).json({ success: false, ok: false, error: 'The server could not process the request.' }); });
+app.use((error, _, response, __) => {
+  if (error?.type === 'entity.too.large' || error?.status === 413) {
+    return response.status(413).json({ success: false, ok: false, error: 'The submitted request is too large.' });
+  }
+  console.error('Unhandled API error', { name: error?.name, message: error?.message });
+  return response.status(500).json({ success: false, ok: false, error: 'The server could not process the request.' });
+});
 
 const server = app.listen(port, '0.0.0.0', () => console.log(`Portfolio API listening on ${port}`));
 const shutdown = () => server.close(() => process.exit(0));

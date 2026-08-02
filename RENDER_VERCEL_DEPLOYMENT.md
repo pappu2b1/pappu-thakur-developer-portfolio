@@ -6,35 +6,34 @@ This is a fresh deployment. No existing Vercel project or Render service is assu
 
 - Frontend: a new Vercel Hobby project from GitHub, rooted at `frontend`.
 - Backend: a new Render Free Web Service from GitHub, rooted at `backend`.
-- Email: Resend HTTPS API delivering to `contact@papputhakur.com`.
-- Domain and DNS management remain manual through Hostinger. No DNS or mailbox changes are made by this repository preparation.
+- Contact email delivery: Resend HTTPS API.
+- Database: not required for portfolio v1.
+- Final domains and DNS are deployment-time configuration; no production URLs are assumed here.
 
 ## New Render Web Service
 
 Dashboard action: **New → Web Service**
 
-- Repository: `pappu2b1/pappu-thakur-developer-portfolio`
-- Branch: `main`
 - Root Directory: `backend`
 - Runtime: Node
 - Instance Type: Free
-- Build Command: `npm ci`
+- Build Command: `npm install`
 - Start Command: `npm start`
 - Health Check Path: `/api/health`
 - Auto Deploy: Enabled
 - Temporary URL: Assigned by Render after first deployment
-- Final custom domain: `api.papputhakur.com`
 
 Render environment variables:
 
 ```env
 NODE_ENV=production
 NODE_VERSION=22
-CORS_ORIGINS=https://papputhakur.com,https://www.papputhakur.com
+CORS_ORIGINS=[SET THE FINAL VERCEL ORIGIN IN RENDER]
+FRONTEND_URL=[OR SET ONE FINAL VERCEL ORIGIN IN RENDER]
 EMAIL_PROVIDER=resend
 RESEND_API_KEY=[ADD ONLY IN RENDER DASHBOARD]
-CONTACT_TO_EMAIL=contact@papputhakur.com
-CONTACT_FROM_EMAIL=Pappu Thakur Portfolio <portfolio@updates.papputhakur.com>
+CONTACT_TO_EMAIL=[YOUR RECEIVING EMAIL]
+CONTACT_FROM_EMAIL=[YOUR VERIFIED RESEND SENDER]
 CONTACT_FILE_FALLBACK=false
 ```
 
@@ -44,28 +43,21 @@ The backend uses `process.env.PORT`, defaults to port `10000` in production, and
 
 Dashboard action: **Add New → Project**
 
-- Repository: `pappu2b1/pappu-thakur-developer-portfolio`
-- Production Branch: `main`
 - Root Directory: `frontend`
 - Framework Preset: Vite
-- Install Command: `npm ci`
+- Install Command: `npm install`
 - Build Command: `npm run build`
 - Output Directory: `dist`
 - Node.js Version: 22
 - Temporary URL: Assigned by Vercel after first deployment
-- Final custom domain: `papputhakur.com`
 
 Vercel environment variable during the initial deployment:
 
 ```env
-VITE_API_BASE_URL=[USE THE WORKING RENDER API URL DURING INITIAL DEPLOYMENT]
+VITE_API_BASE_URL=[USE THE WORKING RENDER API URL ENDING IN /api]
 ```
 
-After the API custom domain is active, set:
-
-```env
-VITE_API_BASE_URL=https://api.papputhakur.com
-```
+After Render is deployed, set `VITE_API_BASE_URL` to the actual Render API base URL, including `/api` (for example, `https://ACTUAL-RENDER-BACKEND.onrender.com/api`).
 
 `frontend/vercel.json` rewrites application routes to `index.html` while leaving real public files, including the resume, assets, sitemap, robots, and manifest, directly accessible.
 
@@ -73,8 +65,8 @@ VITE_API_BASE_URL=https://api.papputhakur.com
 
 1. Prepare and push repository changes.
 2. Create a Resend account.
-3. Add and verify `updates.papputhakur.com` in Resend.
-4. Add the exact SPF and DKIM records supplied by Resend in Hostinger DNS; do not remove existing Hostinger MX records.
+3. Add and verify a sending domain or address in Resend using the exact instructions it provides.
+4. Complete any required DNS verification manually.
 5. Create a Resend API key.
 6. Create a new Render Web Service from GitHub.
 7. Add Render environment variables.
@@ -86,26 +78,25 @@ VITE_API_BASE_URL=https://api.papputhakur.com
 13. Deploy the frontend.
 14. Temporarily allow the exact Vercel deployment URL in Render CORS if required; remove it after the custom domain is active.
 15. Test the complete application.
-16. Connect `api.papputhakur.com` to Render.
-17. Connect `papputhakur.com` to Vercel.
-18. Set `VITE_API_BASE_URL=https://api.papputhakur.com`.
-19. Redeploy Vercel.
-20. Set final Render CORS origins.
-21. Verify SSL, redirects, routes, resume, and email.
+16. Configure optional custom domains manually.
+17. Set `VITE_API_BASE_URL` to the actual Render API base URL.
+18. Redeploy Vercel.
+19. Set the final Render CORS origin.
+20. Verify routes, resume, and email.
 
 ## Resend setup
 
 1. Create a Resend account.
-2. Add the sending subdomain `updates.papputhakur.com`.
-3. Copy the exact SPF and DKIM records supplied by Resend.
-4. Add only those exact records in Hostinger DNS.
-5. Do not remove existing Hostinger MX records.
-6. Wait until Resend reports the domain as verified.
-7. Create an API key.
-8. Add it only to Render Environment Variables as `RESEND_API_KEY`.
+2. Add a sending domain or address in Resend.
+3. Complete the exact verification steps supplied by Resend.
+4. Wait until Resend reports the sender as verified.
+5. Create an API key.
+6. Add it only to Render Environment Variables as `RESEND_API_KEY`.
 
 Do not invent DNS values or commit an API key. No DNS changes, Resend verification, Vercel project, Render service, domain, SSL, or production email receipt has been completed or claimed.
 
 ## Verification checklist
+
+Verify `papputhakur.com` (or the actual sending domain) in Resend before final contact-form verification.
 
 Before claiming production readiness, verify `/api/health` and `/api/version` on the Render temporary URL, run a controlled contact test, open and refresh every React Router route, open and download the resume, confirm the final CORS allowlist, verify SSL and the `www` redirect, and confirm receipt through the Resend-sent email.
