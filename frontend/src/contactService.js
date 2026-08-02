@@ -1,7 +1,19 @@
-const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+const configuredBaseUrl = (import.meta.env?.VITE_API_BASE_URL || '').replace(/\/+$/, '');
 const API_BASE_URL = configuredBaseUrl.endsWith('/api')
   ? configuredBaseUrl
   : `${configuredBaseUrl}/api`;
+
+export function buildContactPayload(data) {
+  return {
+    name: String(data.name || '').trim(),
+    email: String(data.email || '').trim(),
+    company: String(data.company || '').trim(),
+    opportunityType: String(data.opportunityType || '').trim(),
+    budget: String(data.budget || '').trim(),
+    message: String(data.message || '').trim(),
+    website: String(data.website || '').trim(),
+  };
+}
 
 export async function submitContact(payload, signal) {
   const response = await fetch(`${API_BASE_URL}/contact`, {
