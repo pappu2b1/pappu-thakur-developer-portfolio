@@ -8,8 +8,14 @@ export const clean = (value, max) => String(value ?? '')
 
 export function validateContact(body = {}) {
   const rawName = String(body.name ?? '').trim();
+  const rawCompany = String(body.company ?? '').trim();
+  const rawOpportunityType = String(body.opportunityType ?? '').trim();
+  const rawBudget = String(body.budget ?? '').trim();
   const rawMessage = String(body.message ?? '').trim();
   if (rawName.length > 120) return { error: 'Please provide a valid name.' };
+  if (rawCompany.length > 200) return { error: 'Please provide a valid company name.' };
+  if (rawOpportunityType.length > 100) return { error: 'Please select a valid opportunity type.' };
+  if (rawBudget.length > 100) return { error: 'Please select a valid budget range.' };
   if (rawMessage.length > 2000) return { error: 'Please provide a message between 20 and 2,000 characters.' };
   const enquiry = {
     name: clean(body.name, 120),

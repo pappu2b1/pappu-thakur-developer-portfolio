@@ -43,6 +43,8 @@ const configuredOrigins = [
   process.env.FRONTEND_URL,
 ].map(normalizeOrigin).filter(Boolean);
 const corsOptions = {
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'X-Request-ID'],
   origin(origin, callback) {
     if (!origin) return callback(null, true);
     return callback(null, configuredOrigins.includes(normalizeOrigin(origin)));
@@ -84,6 +86,9 @@ app.use((_, response) => response.status(404).json({ success: false, ok: false, 
 app.use((error, _, response, __) => {
   if (error?.type === 'entity.too.large' || error?.status === 413) {
     return response.status(413).json({ success: false, ok: false, error: 'The submitted request is too large.' });
+  }
+  if (error?.type === 'entity.parse.failed' && error?.status === 400) {
+    return response.status(400).json({ success: false, ok: false, error: 'The submitted JSON is invalid.' });
   }
   console.error('Unhandled API error', { name: error?.name, message: error?.message });
   return response.status(500).json({ success: false, ok: false, error: 'The server could not process the request.' });

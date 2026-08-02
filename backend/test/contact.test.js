@@ -28,9 +28,13 @@ test('Resend rejection, missing key, and timeout fail safely', async () => {
   await assert.rejects(timeout.send(enquiry, 'request-timeout'));
 });
 
-test('validation rejects invalid email, missing name, empty or oversized message, honeypot, and header injection', () => {
+test('validation rejects invalid email, missing fields, oversized fields, honeypot, and header injection', () => {
   assert.ok(validateContact({ ...enquiry, email: 'bad\r\nBcc:evil@example.com' }).error);
   assert.ok(validateContact({ ...enquiry, name: '' }).error);
+  assert.ok(validateContact({ ...enquiry, name: 'x'.repeat(121) }).error);
+  assert.ok(validateContact({ ...enquiry, company: 'x'.repeat(201) }).error);
+  assert.ok(validateContact({ ...enquiry, opportunityType: 'x'.repeat(101) }).error);
+  assert.ok(validateContact({ ...enquiry, budget: 'x'.repeat(101) }).error);
   assert.ok(validateContact({ ...enquiry, message: '' }).error);
   assert.ok(validateContact({ ...enquiry, message: 'x'.repeat(2001) }).error);
   assert.ok(validateContact({ ...enquiry, website: 'bot' }).error);
@@ -42,8 +46,12 @@ test('production disables local file fallback', () => {
 });
 
 test('email content includes text and escaped HTML', () => {
-  const content = buildEmailContent(enquiry, 'request-content', '2026-01-01T00:00:00.000Z');
+  const injected = { ...enquiry, company: '<img src=x onerror=alert(1)>', opportunityType: '"><svg onload=alert(1)>', budget: '<b>test</b>', message: '<script>alert(1)</script>' };
+  const content = buildEmailContent(injected, 'request-content', '2026-01-01T00:00:00.000Z');
   assert.match(content.text, /Message:/);
-  assert.match(content.html, /Example &amp; Co/);
+  assert.match(content.html, /&lt;img/);
+  assert.match(content.html, /&lt;svg/);
+  assert.match(content.html, /&lt;b&gt;test&lt;\/b&gt;/);
   assert.doesNotMatch(content.html, /<script>/);
+  assert.doesNotMatch(content.html, /<img|<svg|<b>/);
 });
