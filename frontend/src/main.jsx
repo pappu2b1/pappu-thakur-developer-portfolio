@@ -44,7 +44,7 @@ function Contact() {
     }
     setState({ status: 'loading', error: '', fieldErrors: {} });
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 75000);
     try {
       await submitContact(payload, controller.signal);
       form.reset();
