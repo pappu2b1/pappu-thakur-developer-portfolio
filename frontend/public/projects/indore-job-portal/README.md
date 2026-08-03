@@ -1,7 +1,7 @@
 # Indore Job Portal project image
 
-Add a real Indore Job Portal screenshot in this folder when one is available.
+The real Indore Job Portal homepage screenshot is stored in this folder.
 
-Suggested filename: `indore-job-portal-screenshot.webp`
+Filename: `indore-job-portal-home.png`
 
-The portfolio currently uses its existing code-rendered job portal preview so that no unrelated or fabricated image is shown.
+It is used as the primary image on the project card and case-study route.
