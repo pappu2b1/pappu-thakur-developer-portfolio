@@ -53,7 +53,7 @@ export const projects = [
     limitations: 'Cash on Delivery is the verified checkout workflow. Real online payment processing is not claimed.'
   },
   {
-    slug: 'leadflow-crm-dashboard', title: 'LeadFlow CRM', category: 'Full-Stack CRM / SaaS Dashboard', status: 'Production-Deployed Project', preview: 'leadflow', featured: true,
+    slug: 'leadflow-crm-dashboard', title: 'LeadFlow CRM', category: 'Full-Stack CRM / SaaS Dashboard', status: 'Production-Deployed Project', preview: '/projects/leadflow-crm-dashboard/leadflow-crm-dashboard.jpeg', previewAlt: 'LeadFlow CRM dashboard preview', featured: true,
     tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
     fullTech: ['React', 'Vite', 'JavaScript', 'Tailwind CSS', 'React Router', 'Axios', 'Recharts', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT Authentication', 'REST API', 'Helmet', 'Express Rate Limit', 'Vercel', 'Render'],
     summary: 'A production-deployed CRM dashboard with lead management, reporting, authentication, MongoDB persistence and a secure read-only public demo.',
@@ -78,7 +78,8 @@ export const projects = [
     sourceUrl: 'https://github.com/pappu2b1/leadflow-crm-dashboard',
     seoTitle: 'LeadFlow CRM Dashboard Case Study | Pappu Thakur',
     seoDescription: 'Full-stack CRM dashboard built with React, Node.js, Express and MongoDB, featuring lead management, reporting, secure authentication and a read-only live demo.',
-    screenshotNote: 'No real project screenshots are currently published. Use the verified live demo to explore the responsive dashboard with synthetic data.',
+    screenshots: [{ src: '/projects/leadflow-crm-dashboard/leadflow-crm-dashboard.jpeg', alt: 'LeadFlow CRM dashboard preview', caption: 'LeadFlow CRM dashboard interface' }],
+    screenshotNote: 'One real project screenshot is published as the LeadFlow CRM card cover and case-study preview.',
     limitations: 'The public portfolio experience is intentionally read-only. Private administrative access and persistent CRM changes are not exposed to visitors.'
   }
 ].sort((a, b) => { const featuredOrder = ['ecommerce-website-demo', 'leadflow-crm-dashboard']; const rank = (project) => { const index = featuredOrder.indexOf(project.slug); return index === -1 ? featuredOrder.length : index; }; return rank(a) - rank(b); });
