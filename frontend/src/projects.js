@@ -53,12 +53,32 @@ export const projects = [
     limitations: 'Cash on Delivery is the verified checkout workflow. Real online payment processing is not claimed.'
   },
   {
-    slug: 'leadflow-crm-dashboard', title: 'LeadFlow CRM Dashboard', category: 'Dashboard Interface', status: 'Additional Development Work', preview: 'crm', featured: false,
-    tech: ['React', 'JavaScript', 'Tailwind CSS'],
-    summary: 'A focused dashboard interface for scanning pipeline health and taking the next action quickly.',
-    problem: 'Operators need a compact overview of lead activity without losing the detail needed for follow-up.',
-    solution: 'A responsive dashboard layout with clear hierarchy, metrics, visual pipeline cues and concise navigation.', role: 'Frontend implementation',
-    features: ['Dashboard hierarchy', 'Responsive card system', 'Pipeline and activity views'],
-    limitations: 'Live deployment and repository links are not verified.'
+    slug: 'leadflow-crm-dashboard', title: 'LeadFlow CRM', category: 'Full-Stack CRM / SaaS Dashboard', status: 'Production-Deployed Project', preview: 'leadflow', featured: true,
+    tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
+    fullTech: ['React', 'Vite', 'JavaScript', 'Tailwind CSS', 'React Router', 'Axios', 'Recharts', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT Authentication', 'REST API', 'Helmet', 'Express Rate Limit', 'Vercel', 'Render'],
+    summary: 'A production-deployed CRM dashboard with lead management, reporting, authentication, MongoDB persistence and a secure read-only public demo.',
+    overview: 'LeadFlow CRM is a full-stack lead management application for organizing prospects, follow-ups, activity notes and sales insights. It combines a responsive React dashboard with a secured Express API, MongoDB persistence for private administration and a dedicated synthetic dataset for public portfolio exploration.',
+    problem: 'Sales activity becomes difficult to manage when lead details, follow-up dates, notes and pipeline reporting are spread across disconnected tools.',
+    solution: 'LeadFlow brings lead records, workflow statuses, follow-up queues, activity notes and reports into one responsive workspace backed by an authenticated REST API.', role: 'Full-Stack Developer',
+    features: ['CRM dashboard and sales insights', 'Lead management, details and workflow statuses', 'Search, filtering, sorting and pagination', 'Follow-up queues for overdue, today and upcoming work', 'Activity notes and lead timelines', 'Reports and pipeline analytics', 'JWT authentication and protected API routes', 'Separate private admin and public demo modes', 'Backend-enforced read-only demo authorization', 'Static synthetic demo dataset isolated from private records', 'Production-safe API errors and health monitoring', 'Responsive desktop, tablet and mobile interface'],
+    architecture: ['Frontend: React + Vite · Vercel · leadflow.papputhakur.com', 'Backend: Node.js + Express · Render Web Service', 'Database: MongoDB + Mongoose · MongoDB Atlas', 'Authentication: JWT · private admin and read-only demo roles'],
+    caseSections: [
+      { title: 'Architecture', body: 'React and Vite power the responsive dashboard, Axios communicates with the Node.js and Express REST API over HTTPS, and Mongoose connects private admin workflows to MongoDB Atlas. Vercel hosts the frontend and Render hosts the backend service.' },
+      { title: 'Authentication & Security', body: 'JWT authentication protects API access. Production configuration uses environment-controlled secrets, restricted CORS, Helmet security headers, rate limiting, safe error responses and health endpoints for service and database checks.' },
+      { title: 'Read-Only Public Demo', body: 'Portfolio visitors can choose Open Live Demo without receiving private credentials. A dedicated short-lived demo role can browse dashboards, leads, follow-ups and reports, while backend authorization rejects every persistent mutation with HTTP 403.' },
+      { title: 'Data Isolation', body: 'The public demo reads from a static synthetic fixture rather than MongoDB, preventing future private lead records from appearing in the portfolio experience. Private administrators retain the separate MongoDB-backed management workflow.' },
+      { title: 'Deployment', body: 'The production frontend runs on Vercel with a custom LeadFlow subdomain. The Express API runs as a Render Web Service and connects to MongoDB Atlas through production environment configuration.' }
+    ],
+    challenges: [
+      { title: 'Safe public access', body: 'The demo needed to remain useful to visitors without sharing an admin password or allowing writes. Separate JWT claims and centralized backend authorization establish that boundary.' },
+      { title: 'Private data isolation', body: 'Demo reads are served from a synthetic in-memory fixture, so the public interface cannot accidentally reveal MongoDB-backed private records.' },
+      { title: 'Consistent analytics', body: 'Dashboard, follow-up and report responses preserve the same API shapes for both modes, allowing the frontend to reuse its existing views safely.' }
+    ],
+    demoUrl: 'https://leadflow.papputhakur.com',
+    sourceUrl: 'https://github.com/pappu2b1/leadflow-crm-dashboard',
+    seoTitle: 'LeadFlow CRM Dashboard Case Study | Pappu Thakur',
+    seoDescription: 'Full-stack CRM dashboard built with React, Node.js, Express and MongoDB, featuring lead management, reporting, secure authentication and a read-only live demo.',
+    screenshotNote: 'No real project screenshots are currently published. Use the verified live demo to explore the responsive dashboard with synthetic data.',
+    limitations: 'The public portfolio experience is intentionally read-only. Private administrative access and persistent CRM changes are not exposed to visitors.'
   }
-].sort((a, b) => Number(b.slug === 'ecommerce-website-demo') - Number(a.slug === 'ecommerce-website-demo'));
+].sort((a, b) => { const featuredOrder = ['ecommerce-website-demo', 'leadflow-crm-dashboard']; const rank = (project) => { const index = featuredOrder.indexOf(project.slug); return index === -1 ? featuredOrder.length : index; }; return rank(a) - rank(b); });
