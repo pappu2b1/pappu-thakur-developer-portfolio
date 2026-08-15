@@ -53,6 +53,31 @@ export const projects = [
     limitations: 'Cash on Delivery is the verified checkout workflow. Real online payment processing is not claimed.'
   },
   {
+    slug: 'xtra-power-pipes', title: 'Xtra Power Pipes', category: 'B2B Pipe Manufacturer Frontend Demo', status: 'Frontend Demo', preview: '/projects/xtra-power-pipes/xtra-power-pipes-preview.svg', previewAlt: 'Xtra Power Pipes responsive manufacturer website preview', featured: true,
+    tech: ['React', 'Vite', 'React Router', 'CSS'],
+    fullTech: ['React', 'Vite', 'React Router', 'Lucide React', 'Custom CSS', 'Responsive Web Design'],
+    summary: 'A modern responsive product catalogue and enquiry-focused manufacturer website built with React.',
+    overview: 'Xtra Power Pipes is a frontend-only B2B manufacturing website demo designed to present pipe products professionally and guide visitors toward bulk quotes, dealership enquiries, calls and WhatsApp conversations across devices.',
+    problem: 'Traditional directory-style business visibility does not give manufacturers a structured product-discovery or B2B enquiry experience. Buyers need a clearer way to explore products by category and application before starting a sales conversation.',
+    solution: 'Built a multi-page React frontend centered on manufacturer positioning, application-led product discovery and conversion paths for bulk, dealer, quotation, phone and WhatsApp enquiries.',
+    role: 'Frontend Developer / UI Implementation',
+    features: ['Responsive industrial manufacturer UI', 'Product catalogue with search', 'Category and application filtering', 'Dynamic product detail pages', 'Bulk quote modal', 'Dealer enquiry flow', 'Contact form with frontend-only validation', 'FAQ accordion and application showcase', 'Floating WhatsApp action', 'Mobile Call / WhatsApp / Quote conversion bar', 'Responsive navigation', 'Frontend-only success states with no network submission'],
+    architecture: ['Frontend: React + Vite', 'Routing: React Router', 'UI: Custom CSS + Lucide React', 'Forms: Frontend-only validation and success states'],
+    caseSections: [
+      { title: 'Constraints', body: 'This is a frontend-only demonstration with no backend, API, database or real enquiry submission. Unknown business details remain configurable or clearly marked, with no fabricated certifications, testimonials or technical claims.' },
+      { title: 'Route Structure', body: 'The experience covers the homepage, product catalogue, dynamic product details, applications, about, quality, dealer enquiry, contact and a 404 fallback through the existing React Router setup.' },
+      { title: 'Verification & Quality', body: 'The production build passes. The CSS supports responsive layouts from 320px through large desktop widths, responsive navigation, accessible focus behavior and cross-browser-oriented normalization without claiming physical Safari or Firefox testing.' }
+    ],
+    demoStatus: 'No public live demo',
+    demoDescription: 'No public live URL has been supplied for this frontend demo.',
+    sourceUrl: 'https://github.com/pappu2b1/Xtra-Power-Pipes-Frontend',
+    seoTitle: 'Xtra Power Pipes Frontend Demo Case Study | Pappu Thakur',
+    seoDescription: 'Responsive B2B pipe manufacturer frontend demo built with React, Vite, React Router and custom CSS for product discovery and enquiry-focused journeys.',
+    screenshots: [{ src: '/projects/xtra-power-pipes/xtra-power-pipes-preview.svg', alt: 'Xtra Power Pipes responsive manufacturer website preview', caption: 'Portfolio preview for the Xtra Power Pipes frontend demo' }],
+    screenshotNote: 'A project-specific portfolio preview is used because no public deployment is currently available.',
+    limitations: 'Frontend demo only: no backend, API, database, real form submission or verified public live deployment is included.'
+  },
+  {
     slug: 'leadflow-crm-dashboard', title: 'LeadFlow CRM', category: 'Full-Stack CRM / SaaS Dashboard', status: 'Production-Deployed Project', preview: '/projects/leadflow-crm-dashboard/leadflow-crm-dashboard.jpeg', previewAlt: 'LeadFlow CRM dashboard preview', featured: true,
     tech: ['React', 'Node.js', 'Express.js', 'MongoDB'],
     fullTech: ['React', 'Vite', 'JavaScript', 'Tailwind CSS', 'React Router', 'Axios', 'Recharts', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT Authentication', 'REST API', 'Helmet', 'Express Rate Limit', 'Vercel', 'Render'],
@@ -82,4 +107,4 @@ export const projects = [
     screenshotNote: 'One real project screenshot is published as the LeadFlow CRM card cover and case-study preview.',
     limitations: 'The public portfolio experience is intentionally read-only. Private administrative access and persistent CRM changes are not exposed to visitors.'
   }
-].sort((a, b) => { const featuredOrder = ['ecommerce-website-demo', 'leadflow-crm-dashboard']; const rank = (project) => { const index = featuredOrder.indexOf(project.slug); return index === -1 ? featuredOrder.length : index; }; return rank(a) - rank(b); });
+].sort((a, b) => { const featuredOrder = ['ecommerce-website-demo', 'leadflow-crm-dashboard', 'xtra-power-pipes']; const rank = (project) => { const index = featuredOrder.indexOf(project.slug); return index === -1 ? featuredOrder.length : index; }; return rank(a) - rank(b); });
