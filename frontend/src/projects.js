@@ -9,7 +9,7 @@ export const projects = [
     limitations: 'Automated payment processing, invoices, password reset, email verification, refresh tokens and bulk WhatsApp sending are not claimed complete.'
   },
   {
-    slug: 'indore-job-portal', title: 'Indore Job Portal', category: 'Full-Stack Web Application', status: 'Completed Project', preview: '/projects/indore-job-portal/indore-job-portal-home.png', featured: true,
+    slug: 'indore-job-portal', title: 'Indore Job Portal', category: 'Full-Stack Web Application', status: 'Completed Project', preview: '/projects/indore-job-portal/indore-job-portal-home.png', featured: false,
     tech: ['React', 'Vite', 'React Router', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'JWT'],
     summary: 'A full-stack job portal built for job seekers and employers with secure authentication, job listings, applications, role-based access, and a production-ready REST API.',
     problem: 'Job seekers and employers need a secure, responsive way to publish opportunities, discover roles and manage applications through one clear workflow.',
