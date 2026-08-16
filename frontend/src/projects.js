@@ -68,6 +68,7 @@ export const projects = [
       { title: 'Route Structure', body: 'The experience covers the homepage, product catalogue, dynamic product details, applications, about, quality, dealer enquiry, contact and a 404 fallback through the existing React Router setup.' },
       { title: 'Verification & Quality', body: 'The production build passes. The CSS supports responsive layouts from 320px through large desktop widths, responsive navigation, accessible focus behavior and cross-browser-oriented normalization without claiming physical Safari or Firefox testing.' }
     ],
+    demoUrl: 'https://xtrapowerpipes.papputhakur.com',
     demoStatus: 'No public live demo',
     demoDescription: 'No public live URL has been supplied for this frontend demo.',
     sourceUrl: 'https://github.com/pappu2b1/Xtra-Power-Pipes-Frontend',
